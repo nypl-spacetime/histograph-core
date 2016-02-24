@@ -1,49 +1,34 @@
 {
   "name": "histograph-core",
   "version": "0.5.0",
-  "description": "Read from Redis and index to Graphmalizer and Elasticsearch",
+  "description": "Read from Redis and index to Graphmalizer, Elasticsearch and PostGIS",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "jshint index.js && jscs index.js"
+    "test": "standard"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/histograph/core.git"
+    "url": "https://github.com/nypl-spacetime/histograph-core.git"
   },
   "author": "Jelle 'wires' Herold <jelle@waag.org>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/histograph/core/issues"
+    "url": "https://github.com/nypl-spacetime/histograph-core/issues"
   },
-  "homepage": "https://github.com/histograph/core",
+  "homepage": "https://github.com/nypl-spacetime/histograph-core",
   "dependencies": {
-    "elasticsearch": "^8.2.0",
+    "fuzzy-dates": "histograph/fuzzy-dates",
+    "graphmalizer-core": "graphmalizer/graphmalizer-core",
     "highland": "^2.5.1",
-    "fuzzy-dates": "git+https://github.com/histograph/fuzzy-dates#v0.5.0",
-    "graphmalizer-core": "git+https://github.com/graphmalizer/graphmalizer-core#v0.5.0",
-    "histograph-config": "git+https://github.com/histograph/config#v0.5.0",
-    "histograph-schemas": "git+https://github.com/histograph/schemas#v0.5.0",
-    "histograph-uri-normalizer": "git+https://github.com/histograph/uri-normalizer#v0.5.0",
-    "minimist": "^1.1.3",
-    "redis": "^0.12.1"
+    "histograph-config": "nypl-spacetime/histograph-config",
+    "histograph-schemas": "nypl-spacetime/histograph-schemas",
+    "histograph-uri-normalizer": "histograph/uri-normalizer",
+    "histograph-db-graphmalizer": "nypl-spacetime/histograph-db-graphmalizer",
+    "histograph-db-elasticsearch": "nypl-spacetime/histograph-db-elasticsearch",
+    "histograph-db-postgis": "nypl-spacetime/histograph-db-postgis"
   },
   "devDependencies": {
-    "mocha": "^2.2.1",
-    "jscs": "^1.10.0",
-    "jshint": "^2.6.0"
-  },
-  "jshintConfig": {
-    "node": true,
-    "globalstrict": false,
-    "undef": true,
-    "unused": true,
-    "noarg": true
-  },
-  "jscsConfig": {
-    "preset": "airbnb",
-    "requireCamelCaseOrUpperCaseIdentifiers": null,
-    "disallowMultipleVarDecl": true,
-    "requireMultipleVarDecl": null
+    "standard": "^6.0.7"
   }
 }
