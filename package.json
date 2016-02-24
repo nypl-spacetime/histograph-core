@@ -22,11 +22,12 @@
     "graphmalizer-core": "graphmalizer/graphmalizer-core",
     "highland": "^2.5.1",
     "histograph-config": "nypl-spacetime/histograph-config",
+    "histograph-db-elasticsearch": "nypl-spacetime/histograph-db-elasticsearch",
+    "histograph-db-graphmalizer": "nypl-spacetime/histograph-db-graphmalizer",
+    "histograph-db-postgis": "nypl-spacetime/histograph-db-postgis",
     "histograph-schemas": "nypl-spacetime/histograph-schemas",
     "histograph-uri-normalizer": "histograph/uri-normalizer",
-    "histograph-db-graphmalizer": "nypl-spacetime/histograph-db-graphmalizer",
-    "histograph-db-elasticsearch": "nypl-spacetime/histograph-db-elasticsearch",
-    "histograph-db-postgis": "nypl-spacetime/histograph-db-postgis"
+    "redis": "^2.4.2"
   },
   "devDependencies": {
     "standard": "^6.0.7"
