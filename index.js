@@ -18,10 +18,17 @@ function preprocess (message) {
       message.payload.validUntil = fuzzyDates.convert(message.payload.validUntil)
     }
 
-    // normalize id
+    // normalize IDs/URIs
     var id = normalize(message.payload.id || message.payload.uri, message.meta.dataset)
     message.payload.id = id
     delete message.payload.uri
+  } else if (message.type === 'relation' && (message.action === 'create' || message.action === 'update')) {
+    // normalize IDs/URIs
+    var from = normalize(message.payload.from, message.meta.dataset)
+    var to = normalize(message.payload.to, message.meta.dataset)
+
+    message.payload.from = from
+    message.payload.to = to
   }
 
   return message
