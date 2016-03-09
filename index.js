@@ -77,6 +77,10 @@ var commands = redis
 dbs.forEach((db) => {
   var dbModule = require(`histograph-db-${db}`)
 
+  if (dbModule.initialize) {
+    dbModule.initialize()
+  }
+
   var pipeline = H.pipeline(
     H.map(R.clone),
     H.batchWithTimeOrCount(config.core.batchTimeout, config.core.batchSize),
