@@ -9,7 +9,7 @@ var fuzzyDates = require('fuzzy-dates')
 var graphmalizer = require('histograph-db-graphmalizer')
 
 function preprocess (message) {
-  if (message.type === 'pit' && (message.action === 'create' || message.action === 'update')) {
+  if (message.type === 'pit') {
     if (message.payload.validSince) {
       message.payload.validSince = fuzzyDates.convert(message.payload.validSince)
     }
@@ -22,7 +22,7 @@ function preprocess (message) {
     var id = normalize(message.payload.id || message.payload.uri, message.meta.dataset)
     message.payload.id = id
     delete message.payload.uri
-  } else if (message.type === 'relation' && (message.action === 'create' || message.action === 'update')) {
+  } else if (message.type === 'relation') {
     // normalize IDs/URIs
     var from = normalize(message.payload.from, message.meta.dataset)
     var to = normalize(message.payload.to, message.meta.dataset)
@@ -66,7 +66,7 @@ function logError (err) {
 
 var dbs = [
   'postgis',
-  'elasticsearch'
+  // 'elasticsearch'
 ]
 
 var commands = redis
