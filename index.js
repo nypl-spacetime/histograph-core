@@ -57,7 +57,7 @@ var redis = H(function redisGenerator (push, next) {
   }
 
   // Blocking pull from Redis
-  redisClient.blpop(config.redis.queue, 0, redisCallback)
+  redisClient.brpop(config.redis.queue, 0, redisCallback)
 })
 
 function logError (err) {
@@ -66,7 +66,7 @@ function logError (err) {
 
 var dbs = [
   'postgis',
-  // 'elasticsearch'
+  'elasticsearch'
 ]
 
 var commands = redis
@@ -85,8 +85,8 @@ dbs.forEach((db) => {
     H.map(R.clone),
     H.batchWithTimeOrCount(config.core.batchTimeout, config.core.batchSize),
     H.map(H.wrapCallback((messages, callback) => dbModule.bulk(messages, callback))),
-    H.errors(logError),
     H.sequence(),
+    H.errors(logError),
     H.each((f) => {})
   )
 
