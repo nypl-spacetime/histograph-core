@@ -1,3 +1,5 @@
+'use strict'
+
 var config = require('histograph-config')
 var R = require('ramda')
 var H = require('highland')
