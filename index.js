@@ -1,14 +1,15 @@
 'use strict'
 
-var config = require('histograph-config')
+var config = require('spacetime-config')
 var R = require('ramda')
 var H = require('highland')
 var Redis = require('redis')
 var redisClient = Redis.createClient(config.redis.port, config.redis.host)
+var redisDoneClient = Redis.createClient(config.redis.port, config.redis.host)
 var normalize = require('histograph-uri-normalizer').normalize
 var fuzzyDates = require('fuzzy-dates')
 
-var graphmalizer = require('histograph-db-graphmalizer')
+var graphmalizer = require('spacetime-db-graphmalizer')
 
 function preprocess (message) {
   if (message.type === 'pit') {
@@ -76,28 +77,66 @@ var commands = redis
   .map(preprocess)
   .compact()
 
+var dbModules = [] //[graphmalizer]
 dbs.forEach((db) => {
-  var dbModule = require(`histograph-db-${db}`)
+  var dbModule = require(`spacetime-db-${db}`)
 
   if (dbModule.initialize) {
     dbModule.initialize()
   }
 
-  var pipeline = H.pipeline(
-    H.map(R.clone),
-    H.batchWithTimeOrCount(config.core.batchTimeout, config.core.batchSize),
-    H.map(H.wrapCallback((messages, callback) => dbModule.bulk(messages, callback))),
-    H.sequence(),
-    H.errors(logError),
-    H.each((f) => {})
-  )
-
-  commands
-    .fork()
-    .pipe(pipeline)
+  dbModules.push(dbModule)
 })
 
-graphmalizer.fromStream(commands.fork())
+function bulkAll(dbModules, messages, callback) {
+  var doneMessages = messages
+    .filter((message) => message.type === 'dataset-done')
+
+  H(dbModules)
+    .filter((module) => module.bulk)
+    .map((module) => H.curry(module.bulk, messages.filter((message) => message.type !== 'dataset-done')))
+    .nfcall([])
+    .parallel(dbModules.length)
+    .errors(callback)
+    .done(() => {
+      doneMessages.forEach((message) => {
+        redisDoneClient
+          .lpush(`${config.redis.queue}-dataset-done`, JSON.stringify(message.payload))
+      })
+      callback()
+    })
+}
+
+commands
+  .batchWithTimeOrCount(config.core.batchTimeout, config.core.batchSize)
+  .map(H.curry(bulkAll, dbModules))
+  .nfcall([])
+  .series()
+  .each(() => {})
+
+// var pipeline = H.pipeline(
+//   H.map(R.clone),
+//   H.batchWithTimeOrCount(config.core.batchTimeout, config.core.batchSize),
+//   H.map(H.wrapCallback((messages, callback) => dbModule.bulk(messages, callback))),
+//   H.sequence(),
+//   H.errors(logError),
+//   H.each((f) => {})
+// )
+//
+// commands
+//   .fork()
+//   .pipe(pipeline)
+
+// function setDone(dataset, type, date) {
+//   console.log(dataset, type, date)
+// }
+//
+// if (message.action === 'done') {
+//   setDone(message.meta.dataset, message.type, message.payload.date)
+//   return null
+// }
+
+// graphmalizer.fromStream(commands.fork())
 
 console.log(config.logo.join('\n'))
-console.log('Histograph Core ready!')
+console.log('Space/Time Core ready!')

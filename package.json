@@ -1,5 +1,5 @@
 {
-  "name": "histograph-core",
+  "name": "spacetime-core",
   "version": "0.5.0",
   "description": "Read from Redis and index to Graphmalizer, Elasticsearch and PostGIS",
   "main": "index.js",
@@ -9,23 +9,23 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/nypl-spacetime/histograph-core.git"
+    "url": "https://github.com/nypl-spacetime/spacetime-core.git"
   },
   "author": "Jelle 'wires' Herold <jelle@waag.org>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/nypl-spacetime/histograph-core/issues"
+    "url": "https://github.com/nypl-spacetime/spacetime-core/issues"
   },
-  "homepage": "https://github.com/nypl-spacetime/histograph-core",
+  "homepage": "https://github.com/nypl-spacetime/spacetime-core",
   "dependencies": {
     "fuzzy-dates": "histograph/fuzzy-dates",
     "graphmalizer-core": "graphmalizer/graphmalizer-core",
     "highland": "^2.5.1",
-    "histograph-config": "nypl-spacetime/histograph-config",
-    "histograph-db-elasticsearch": "nypl-spacetime/histograph-db-elasticsearch",
-    "histograph-db-graphmalizer": "nypl-spacetime/histograph-db-graphmalizer",
-    "histograph-db-postgis": "nypl-spacetime/histograph-db-postgis",
-    "histograph-schemas": "nypl-spacetime/histograph-schemas",
+    "spacetime-config": "nypl-spacetime/spacetime-config",
+    "spacetime-db-elasticsearch": "nypl-spacetime/spacetime-db-elasticsearch",
+    "spacetime-db-graphmalizer": "nypl-spacetime/spacetime-db-graphmalizer",
+    "spacetime-db-postgis": "nypl-spacetime/spacetime-db-postgis",
+    "spacetime-schemas": "nypl-spacetime/spacetime-schemas",
     "histograph-uri-normalizer": "histograph/uri-normalizer",
     "redis": "^2.4.2"
   },
