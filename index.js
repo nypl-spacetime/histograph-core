@@ -77,7 +77,7 @@ var commands = redis
   .map(preprocess)
   .compact()
 
-var dbModules = [] //[graphmalizer]
+var dbModules = [graphmalizer]
 dbs.forEach((db) => {
   var dbModule = require(`spacetime-db-${db}`)
 
@@ -113,30 +113,6 @@ commands
   .nfcall([])
   .series()
   .each(() => {})
-
-// var pipeline = H.pipeline(
-//   H.map(R.clone),
-//   H.batchWithTimeOrCount(config.core.batchTimeout, config.core.batchSize),
-//   H.map(H.wrapCallback((messages, callback) => dbModule.bulk(messages, callback))),
-//   H.sequence(),
-//   H.errors(logError),
-//   H.each((f) => {})
-// )
-//
-// commands
-//   .fork()
-//   .pipe(pipeline)
-
-// function setDone(dataset, type, date) {
-//   console.log(dataset, type, date)
-// }
-//
-// if (message.action === 'done') {
-//   setDone(message.meta.dataset, message.type, message.payload.date)
-//   return null
-// }
-
-// graphmalizer.fromStream(commands.fork())
 
 console.log(config.logo.join('\n'))
 console.log('Space/Time Core ready!')
